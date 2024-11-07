@@ -14,7 +14,7 @@ export const ListWrapper = styled.div(() => ({
     marginTop: '33px',
     boxSizing: 'border-box'as const,
     alignItems: 'center',
-    gap: '2vw', 
+    gap: '65px', 
     padding: '16px 8vw 17px 4vw', 
     
    

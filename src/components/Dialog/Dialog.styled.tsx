@@ -87,22 +87,15 @@ export const AddNewProcedureButton = styled.div(() => ({
 }));
 
 export const DialogBody = styled.div(() => ({
-  marginTop: '40px',
-  width: '100%', // Cambia esto para hacer el contenedor más flexible
-  padding: '0 16px', // Agrega un poco de padding en los laterales
+  maxWidth: "100%",
+  margin: '0 auto',
+  overflow: 'hidden',
 }));
 
-export const StyledDiv = styled.div(() => ({
+export const DialogTable = styled.div(() => ({
   display: 'flex',
   flexDirection: 'column' as const,
-  alignItems: 'flex-start',
-  width: '100%', // Asegura que cada input ocupe todo el ancho disponible
-}));
-
-export const StyledDivWrapper = styled.div(() => ({
-  display: 'flex',
-  flexDirection: 'row' as const,
-  alignItems: 'stretch', // Cambia esto para que los inputs se estiren al ancho disponible
-  gap: '25px', // Ajusta el espacio entre los elementos
-  width: '100%', // Asegúrate de que ocupe el 100% del ancho disponible
+  width: '100%',
+  maxHeight: '215px',
+  overflowY: 'auto' as const,
 }));

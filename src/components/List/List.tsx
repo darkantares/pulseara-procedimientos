@@ -35,7 +35,7 @@ console.log(procedures);
         </ListWrapper>
       ))}
       
-      <Wrapper style={{ marginTop: '20px' }}>
+      <Wrapper style={{ marginTop: '35px' }}>
         <Button onClick={showDialog}>
           <IconButton src="./imgs/pencil.svg" />
           Editar procedimientos

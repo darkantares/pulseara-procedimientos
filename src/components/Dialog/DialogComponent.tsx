@@ -1,7 +1,7 @@
 import { InputText } from '../../InputText/InputText.styled'
-import { ListItemWrapper, ListTitle, Wrapper } from '../List/List.styled'
+import { Wrapper } from '../List/List.styled'
 import { SubTitleICon, TrashICon } from '../NoProcedures/NoProcedures.styled'
-import { OverlayDialog, DialogTitleWrapper, AddNewProcedureButton, DialogBody, StyledDivWrapper, StyledDiv, DialogStyledComponent, DialogTitle, CloseButton } from './Dialog.styled'
+import { OverlayDialog, DialogTitleWrapper, AddNewProcedureButton, DialogBody, DialogStyledComponent, DialogTitle, CloseButton, DialogTable } from './Dialog.styled'
 import { Button } from '../Button/ButtonComponent.styled'
 import { colors } from '../../constants/colors'
 import { useContext, useEffect, useState } from 'react'
@@ -147,7 +147,7 @@ export const DialogComponent = () => {
             <DialogStyledComponent>
                 <DialogTitleWrapper>
                     <CloseButton onClick={()=>showDialog()}>
-                        <img src="./imgs/close.svg" />
+                        <img src="./imgs/close.svg" alt='' />
                     </CloseButton>
                     <DialogTitle>Procedimientos</DialogTitle>  
                     <AddNewProcedureButton onClick={addNewProcedure}>
@@ -155,9 +155,9 @@ export const DialogComponent = () => {
                         Añadir procedimiento
                     </AddNewProcedureButton>
                 </DialogTitleWrapper>
-                <div className="form-table-container">
+                <DialogBody>
                     <form onSubmit={proceduresToSave}>
-                        <div className="table">
+                        <DialogTable>
                             {
                                 newProcedures.map((procedure, index) =>(
                                     !procedure.isDeleted && (
@@ -215,7 +215,7 @@ export const DialogComponent = () => {
                                     )
                                 ))
                             }
-                        </div>
+                        </DialogTable>
                         {
                             newProcedures.length !== 0 &&
                             <Wrapper style={{marginTop: '8px', display:'flex', width:'100%', gap: '12px', justifyContent: 'flex-end'}}>
@@ -228,7 +228,7 @@ export const DialogComponent = () => {
                             </Wrapper>
                         }
                     </form>
-                </div>
+                </DialogBody>                
             </DialogStyledComponent>
         </OverlayDialog>
     )
