@@ -31,7 +31,7 @@ export const Wrapper = styled.div(() => ({
     display: 'flex',
     gap: '12px',
     justifyContent: 'flex-start',
-    marginTop: '35px'
+    marginTop: '40px'
 }));
 
 export const ListItemWrapper = styled.div(() => ({

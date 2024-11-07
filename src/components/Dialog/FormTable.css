@@ -24,9 +24,9 @@ form {
   position: relative; 
 }
 
-.table-field {
-  margin-bottom: 64px; 
-}
+/* .table-field {
+  margin-bottom: 20px; 
+} */
 
 .table-header,
 .table-cell {
@@ -73,6 +73,10 @@ form {
   color: #666;
 }
 
+.table-cell-label{
+  margin-bottom: 8px;
+}
+
 /* Estilos para pantallas pequeñas */
 @media (max-width: 600px) {
   .table-row:first-child {
@@ -113,7 +117,7 @@ form {
   .table-cell {
     display: block; 
   }
-  .table-cell-label{
+  /* .table-cell-label{
     display: none;
-  }
+  } */
 }

@@ -24,7 +24,6 @@ function App() {
   const [formState, setFormState] = useState<CreateProceduresInput>(initialProcedureDataState);
   const {proceduresState, setProcedures} = useContext(GlobalContext);
   const {procedures, showDialog} = proceduresState;
-  // const [todos, setTodos] = useState<Procedures[] | CreateProceduresInput[]>([]);
 
   useEffect(() => {
     fetchTodos();
@@ -56,7 +55,7 @@ function App() {
         </ContainerTitle>
         
         {
-          procedures.length === 0 ? <EmptyProcedures /> : <ListComponent />
+          procedures.length === 0 ? <EmptyProcedures /> : <ListComponent procedures={procedures}/>
         }
         
       </Container>

@@ -92,6 +92,7 @@ export const DialogComponent = () => {
                                             </div>
                                             <label className="table-cell-label">Procedimiento 01</label>
                                             <InputText 
+                                                style={{marginTop: '8px'}}
                                                 placeholder="Ej: 4563523"
                                                 value={item.procedure || ''}
                                                 onChange={(e) => handleChange(index, 'procedure', e.target.value)}

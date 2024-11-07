@@ -23,7 +23,7 @@ export const DialogStyledComponent = styled.div(() => ({
   background: colors.white,
   padding: '0 57.82px',
   boxSizing: 'border-box' as const,
-  position: 'relative' as const, 
+  position: 'relative' as const,
   "@media (max-width: 768px)": {
     width: '95vw', // Ajuste adicional para pantallas tablet o menores
     padding: '0 20px' // Reduce el padding en pantallas pequeñas
