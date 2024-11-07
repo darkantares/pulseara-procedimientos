@@ -8,68 +8,125 @@ import { useContext, useEffect, useState } from 'react'
 import { GlobalContext } from '../../context/context'
 
 import './FormTable.css';
-import { initialProcedureDataState } from '../../consts';
-import { CreateProceduresInput } from '../../API';
+import { InitialProcedureDataState, initialProcedureDataState } from '../../consts';
+import { CreateProceduresInput, DeleteProceduresInput, UpdateProceduresInput } from '../../API';
 import { generateClient } from 'aws-amplify/api'
-import { createProcedures } from '../../graphql/mutations'
+import { createProcedures, deleteProcedures, updateProcedures } from '../../graphql/mutations'
 
 const client = generateClient();
 
 export const DialogComponent = () => {
 
-    const [newProcedures, setNewProcedures] = useState<CreateProceduresInput[]>([]);
+    const [newProcedures, setNewProcedures] = useState<InitialProcedureDataState[]>([]);
 
-    const {showDialog} = useContext(GlobalContext); 
-
-    const addNewProcedure = () => {
-        setNewProcedures([...newProcedures, initialProcedureDataState])
-    }
-
-    const removeProcedure = (index:number) => {
-        // const procs = newProcedures.
-    }
-
+    const {showDialog, proceduresState} = useContext(GlobalContext); 
+    const {procedures} = proceduresState;
+       
     useEffect(() => {
-        setNewProcedures([...newProcedures])
-    }, [])
+        const fetchInitialData = async () => {  
+            const newProcedures:InitialProcedureDataState[] = procedures.map(procedure =>({...procedure, isNew: false, isModified: false, isDeleted: false }));                         
+            setNewProcedures(newProcedures);
+        };
+
+        fetchInitialData();
+    }, []);
+    
+    const addNewProcedure = () => {
+        setNewProcedures([
+            ...newProcedures, 
+            { ...initialProcedureDataState, isNew: true }
+        ]);
+    };
 
     const handleChange = (index: number, field: string, value: string) => {
         const updatedProcedures = [...newProcedures];
-        updatedProcedures[index] = { 
-            ...updatedProcedures[index], 
-            [field]: value 
+        updatedProcedures[index] = {
+            ...updatedProcedures[index],
+            [field]: value,
+            isModified: !updatedProcedures[index].isNew,
         };
         setNewProcedures(updatedProcedures);
-    }
+    };
+
+    const removeProcedure = (index: number) => {
+        const updatedProcedures = [...newProcedures];
+        updatedProcedures[index].isDeleted = true;
+        setNewProcedures(updatedProcedures);
+    };
     
-    async function saveTodo(e:any) {
+    // const cancel = () => {
+    //     showDialog()
+    // }
+
+    const proceduresToSave = async (e:any) => {
+        e.preventDefault()
+        const newItems: CreateProceduresInput[] = newProcedures.filter(
+            item => item.isNew && !item.isDeleted
+        ).map(item => ({
+            // id: item.id || null,
+            authorized: item.authorized,
+            claimed: item.claimed,
+            code: item.code,
+            difference: item.difference,
+            procedure: item.procedure
+        }));
+           
+        const modifiedItems: UpdateProceduresInput[] = newProcedures.filter(
+            item => item.isModified && !item.isDeleted && item.id
+        ).map(item => ({
+            id: item.id as string,
+            authorized: item.authorized,
+            claimed: item.claimed,
+            code: item.code,
+            difference: item.difference,
+            procedure: item.procedure
+        }));
+           
+        const deletedItems: DeleteProceduresInput[] = newProcedures.filter(
+            item => item.isDeleted && item.id
+        ).map(item => ({
+            id: item.id as string,
+        }));
+    
+      
+        
         try {
-            e.preventDefault();
-            console.log(newProcedures);
-    
-            const validProcedures = newProcedures.filter(procedure => procedure.authorized && procedure.code);
-    
-            if (validProcedures.length === 0) {
-                console.log('No valid procedures to save');
-                return;
-            }
-    
-            const promises = validProcedures.map(procedure =>
+            console.log(newItems);
+            
+            const createPromises = newItems.map(procedure =>
                 client.graphql({
                     query: createProcedures,
-                    variables: {
-                        input: procedure,
-                    },
+                    variables: { input: procedure },
                 })
             );
     
-            await Promise.all(promises);
+            const updatePromises = modifiedItems.map(procedure =>
+                client.graphql({
+                    query: updateProcedures,
+                    variables: { input: procedure },
+                })
+            );
     
-            console.log('Procedures saved successfully');
+            const deletePromises = deletedItems.map(procedure =>
+                client.graphql({
+                    query: deleteProcedures,
+                    variables: { input: { id: procedure.id } },
+                })
+            );
+    
+            // console.log(createPromises);
+            // console.log(updatePromises);
+            // console.log(deletePromises);
+            const result = await Promise.all([...createPromises, ...updatePromises, ...deletePromises]);
+            console.log(result);
+            
+            console.log('Changes saved successfully');
         } catch (err) {
             console.log('Error saving procedures:', err);
         }
-    }
+    };
+    
+
     return (
         <OverlayDialog>
             <DialogStyledComponent>
@@ -81,56 +138,63 @@ export const DialogComponent = () => {
                     </AddNewProcedureButton>
                 </DialogTitleWrapper>
                 <div className="form-table-container">
-                    <form onSubmit={saveTodo}>
+                    <form onSubmit={proceduresToSave}>
                         <div className="table">
                             {
-                                newProcedures.map((item, index) =>(
-                                    <div key={index} className="table-field">
-                                        <div className="table-cell">
-                                            <div className="table-icon">
-                                                <TrashICon onClick={()=>removeProcedure(index)} src="./imgs/trash.svg" />
+                                newProcedures.map((procedure, index) =>(
+                                    !procedure.isDeleted && (
+                                        <div key={index} className="table-field">
+                                            <div className="table-cell">
+                                                <div className="table-icon">
+                                                    <TrashICon onClick={()=>removeProcedure(index)} src="./imgs/trash.svg" />
+                                                </div>
+                                                <label className="table-cell-label">Procedimiento 01</label>
+                                                <InputText 
+                                                    style={{marginTop: '8px'}}
+                                                    placeholder="Ej: 4563523"
+                                                    value={procedure.procedure || ''}
+                                                    onChange={(e) => handleChange(index, 'procedure', e.target.value)}
+                                                />
                                             </div>
-                                            <label className="table-cell-label">Procedimiento 01</label>
-                                            <InputText 
-                                                style={{marginTop: '8px'}}
-                                                placeholder="Ej: 4563523"
-                                                value={item.procedure || ''}
-                                                onChange={(e) => handleChange(index, 'procedure', e.target.value)}
-                                            />
+                                            <div className="table-cell">
+                                                <label className="table-cell-label">Código</label>
+                                                <InputText
+                                                    style={{marginTop: '8px'}} 
+                                                    placeholder="Ej: 4563523" 
+                                                    value={procedure.code || ''}
+                                                    onChange={(e) => handleChange(index, 'code', e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="table-cell">
+                                                <label className="table-cell-label">Reclamado RD$</label>
+                                                <InputText
+                                                    style={{marginTop: '8px'}} 
+                                                    placeholder="Ej: 4563523" 
+                                                    value={procedure.claimed || ''}
+                                                    onChange={(e) => handleChange(index, 'claimed', e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="table-cell">
+                                                <label className="table-cell-label">Diferencia RD$</label>
+                                                <InputText
+                                                    style={{marginTop: '8px'}} 
+                                                    placeholder="Ej: 4563523" 
+                                                    value={procedure.difference || ''}
+                                                    onChange={(e) => handleChange(index, 'difference', e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="table-cell">
+                                                <label className="table-cell-label">Autorizado RD$</label>
+                                                <InputText
+                                                    style={{marginTop: '8px'}} 
+                                                    placeholder="Ej: 4563523" 
+                                                    value={procedure.authorized || ''}
+                                                    onChange={(e) => handleChange(index, 'authorized', e.target.value)}
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="table-cell">
-                                            <label className="table-cell-label">Código</label>
-                                            <InputText 
-                                                placeholder="Ej: 4563523" 
-                                                value={item.code || ''}
-                                                onChange={(e) => handleChange(index, 'code', e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="table-cell">
-                                            <label className="table-cell-label">Reclamado RD$</label>
-                                            <InputText 
-                                                placeholder="Ej: 4563523" 
-                                                value={item.claimed || ''}
-                                                onChange={(e) => handleChange(index, 'claimed', e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="table-cell">
-                                            <label className="table-cell-label">Diferencia RD$</label>
-                                            <InputText 
-                                                placeholder="Ej: 4563523" 
-                                                value={item.difference || ''}
-                                                onChange={(e) => handleChange(index, 'difference', e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="table-cell">
-                                            <label className="table-cell-label">Autorizado RD$</label>
-                                            <InputText 
-                                                placeholder="Ej: 4563523" 
-                                                value={item.authorized || ''}
-                                                onChange={(e) => handleChange(index, 'authorized', e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
+
+                                    )
                                 ))
                             }
                         </div>
@@ -139,7 +203,9 @@ export const DialogComponent = () => {
                             <Wrapper style={{marginTop: '8px', display:'flex', width:'100%', gap: '12px', justifyContent: 'flex-end'}}>
                                 <Button 
                                     onClick={()=>showDialog()}
-                                    style={{background:colors.white, color: colors.gray, border: '2px solid #D6D6EB'}}>Cancelar</Button>
+                                    style={{background:colors.white, color: colors.gray, border: '2px solid #D6D6EB'}}>
+                                    Cancelar
+                                </Button>
                                 <Button>Guardar cambios</Button>
                             </Wrapper>
                         }

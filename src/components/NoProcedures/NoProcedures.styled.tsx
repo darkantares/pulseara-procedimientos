@@ -35,6 +35,7 @@ export const TrashICon = styled.img(() => ({
   width: '16.567px',
   height: '18.914px',
   flexShrink: 0,  
+  cursor: 'pointer'
   // marginRight: '13.33px',
 }));
 
