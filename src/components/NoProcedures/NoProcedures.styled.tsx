@@ -5,16 +5,17 @@ export const ContainerNoProcedures = styled.div(() => ({
   flexDirection: 'column' as const,
   justifyContent: 'center',
   alignItems: 'center',
-  // margin: 0,
-  width: '328px',  
+  width: '90vw',   
+  maxWidth: '328px',  
   height: '356px',
   padding: '0px 16px',
   gap: '20px',
   flexShrink: 0,
-  margin: 'auto',
-  position: 'relative' as const,
+  position: 'fixed' as const,   
   top: '50%',
-  transform: 'translateY(50%)'
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  boxSizing: 'border-box' as const,  
 }));
 
 export const Image = styled.img(() => ({  
@@ -35,7 +36,6 @@ export const TrashICon = styled.img(() => ({
   height: '18.914px',
   flexShrink: 0,  
   // marginRight: '13.33px',
-  marginTop: '22px'
 }));
 
 export const Label = styled.p(() => ({

@@ -4,8 +4,8 @@ import { colors } from "../../constants/colors";
 
 export const Button = styled.button(() => ({
     display: 'flex',
-    height: '32px',
-    padding: '16px',
+    height: '32px', // Establece la altura total
+    padding: '8px 16px',
     justifyContent: 'center',
     alignItems: 'center',
     fontFamily: 'Raleway',
@@ -13,6 +13,7 @@ export const Button = styled.button(() => ({
     flexShrink: 0,
     borderRadius: '5px',
     background: colors.blue,
+    boxSizing: 'border-box' as const,
     color: 'white',
     border: 'none',
     cursor: 'pointer',

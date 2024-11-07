@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-procedimientospulsea-dev-b49ea-authRole",
+      "UnauthRoleArn": "arn:aws:iam::221082206215:role/amplify-procedimientospulsea-dev-b49ea-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::221082206215:role/amplify-procedimientospulsea-dev-b49ea-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-procedimientospulsea-dev-b49ea-deployment",
+      "UnauthRoleName": "amplify-procedimientospulsea-dev-b49ea-unauthRole",
+      "StackName": "amplify-procedimientospulsea-dev-b49ea",
+      "StackId": "arn:aws:cloudformation:us-east-1:221082206215:stack/amplify-procedimientospulsea-dev-b49ea/8c60db10-9c71-11ef-9b35-1264f97eef49",
+      "AmplifyAppId": "d1s773xys20x6l"
+    },
+    "categories": {
+      "api": {
+        "procedimientospulsea": {}
+      }
+    }
+  }
+}

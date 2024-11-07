@@ -1,64 +1,66 @@
-import { Container } from "@mui/material";
-import { Button, IconButton } from "./components/Button/ButtonComponent.styled";
 
-import { List, ListItemWrapper, ListTitle, ListWrapper, Wrapper } from "./components/List/List.styled";
-import { ContainerNoProcedures, Image, Label } from "./components/NoProcedures/NoProcedures.styled";
+import { useContext, useEffect, useState } from 'react';
+
+import { generateClient } from 'aws-amplify/api';
+
+import { createProcedures } from './graphql/mutations';
+import { listProcedures } from './graphql/queries';
+import { type CreateProceduresInput, type Procedures } from './API';
+
 import { ContainerTitle, Title } from "./components/Title/Title.styled";
 
+import { EmptyProcedures } from "./components/EmptyProcedures";
+import { Container } from "./components/Global.styled";
 import { DialogComponent } from "./components/Dialog/DialogComponent";
+import { ListComponent } from "./components/List/List";
+import { GlobalContext } from './context/context';
+import { initialProcedureDataState } from './consts';
+
+
+const client = generateClient();
 
 function App() {
+
+  const [formState, setFormState] = useState<CreateProceduresInput>(initialProcedureDataState);
+  const {proceduresState, setProcedures} = useContext(GlobalContext);
+  const {procedures, showDialog} = proceduresState;
+  // const [todos, setTodos] = useState<Procedures[] | CreateProceduresInput[]>([]);
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  async function fetchTodos() {
+      try {
+        const procedureData = await client.graphql({
+          query: listProcedures,
+        });
+        const procedures = procedureData.data.listProcedures.items;
+        setProcedures(procedures);
+        console.log(procedures);
+        
+      } catch (err) {
+        console.log('error fetching todos');
+      }
+  }
+
   return (
     <>
-      <DialogComponent />
+      {
+        showDialog && <DialogComponent />
+      }
 
       <Container>
         <ContainerTitle>
           <Title>Procedimientos</Title>
         </ContainerTitle>
         
-        <ListWrapper> 
-          <List>
-            <ListItemWrapper>
-              <ListTitle>Procedimiento 01</ListTitle>
-              <span>dsfsdfsd</span>
-            </ListItemWrapper>
-            <ListItemWrapper>
-              <ListTitle>Código</ListTitle>
-              <span>dsfsdfsd</span>
-            </ListItemWrapper>
-            <ListItemWrapper>
-              <ListTitle>Reclamado RD$</ListTitle>
-              <span>dsfsdfsd</span>
-            </ListItemWrapper>
-            <ListItemWrapper>
-              <ListTitle>Diferencia RD$</ListTitle>
-              <span>dsfsdfsd</span>
-            </ListItemWrapper>
-            <ListItemWrapper>
-              <ListTitle>Autorizado RD$</ListTitle>
-              <span>dsfsdfsd</span>
-            </ListItemWrapper>
-          </List>        
-        </ListWrapper>
-
-        <Wrapper> 
-          
-          <Button>
-            <IconButton src="./imgs/pencil.svg" />
-            Editar procedimientos
-          </Button>
-        </Wrapper>
+        {
+          procedures.length === 0 ? <EmptyProcedures /> : <ListComponent />
+        }
+        
       </Container>
       
-      <ContainerNoProcedures>
-        <Image src={'./imgs/no-procedures.svg'} />
-        <Label>No hay datos que mostrar</Label>
-        <Button>            
-          <IconButton src="./imgs/pencil.svg" />
-          Editar procedimientos
-        </Button>
-      </ContainerNoProcedures>
     </>
   );
 }

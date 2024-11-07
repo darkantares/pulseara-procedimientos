@@ -1,37 +1,43 @@
 import styled from "@emotion/styled";
 import { colors } from "../../constants/colors";
 
-export const DialogWrapperComponent = styled.div(() => ({
+export const OverlayDialog = styled.div(() => ({
   position: 'fixed' as const,
   top: 0,
   left: 0,
-  width: '100vw',
-  height: '100vh',
+  width: '100%',
+  height: '100%',
   backgroundColor: 'rgba(0, 0, 0, 0.30)',
   zIndex: 1000,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 }));
 
 export const DialogStyledComponent = styled.div(() => ({
-  width: '1041px',
-  maxWidth: '80Vw',
+  width: '90vw',
+  maxWidth: '1041px',
   height: '456px',
-  flexShrink: 0,
+  // flexShrink: 0,
   borderRadius: '8px',
   background: colors.white,
-  margin: 'auto',
-  transform: 'translateY(50%)',
-  paddingLeft: '57.82px'
+  padding: '0 57.82px',
+  boxSizing: 'border-box' as const,
+  position: 'relative' as const, 
+  "@media (max-width: 768px)": {
+    width: '95vw', // Ajuste adicional para pantallas tablet o menores
+    padding: '0 20px' // Reduce el padding en pantallas pequeñas
+  }
 }));
 
 export const DialogTitleWrapper = styled.div(() => ({
   paddingTop: '43.8px',
   display: 'flex',
   alignItems: 'center',
-  width: '559px',
   height: '45px',
   flexShrink: 0,
   gap: '20px',
-  marginLeft: '40px'
+  marginLeft: '26px'
 }));
 
 export const DialogTitle = styled.div(() => ({
@@ -44,7 +50,7 @@ export const DialogTitle = styled.div(() => ({
   lineHeight: '140%',
 }));
 
-export const DialogSubTitle = styled.div(() => ({
+export const AddNewProcedureButton = styled.div(() => ({
   color: colors.green,
   fontFeatureSettings: "'liga' off, 'clig' off",
   fontFamily: 'Open Sans',
@@ -52,26 +58,26 @@ export const DialogSubTitle = styled.div(() => ({
   fontStyle: 'normal',
   fontWeight: 700,
   lineHeight: '150%',
-  marginTop: '12px',
   cursor: 'pointer'
 }));
 
 export const DialogBody = styled.div(() => ({
   marginTop: '40px',
-  width: '880px'
+  width: '100%', // Cambia esto para hacer el contenedor más flexible
+  padding: '0 16px', // Agrega un poco de padding en los laterales
 }));
-
 
 export const StyledDiv = styled.div(() => ({
   display: 'flex',
   flexDirection: 'column' as const,
   alignItems: 'flex-start',
-  width: '145px'
+  width: '100%', // Asegura que cada input ocupe todo el ancho disponible
 }));
 
 export const StyledDivWrapper = styled.div(() => ({
   display: 'flex',
   flexDirection: 'row' as const,
-  alignItems: 'center',
-  gap: '25px'
+  alignItems: 'stretch', // Cambia esto para que los inputs se estiren al ancho disponible
+  gap: '25px', // Ajusta el espacio entre los elementos
+  width: '100%', // Asegúrate de que ocupe el 100% del ancho disponible
 }));
