@@ -30,8 +30,7 @@ export const List = styled.div(() => ({
 export const Wrapper = styled.div(() => ({
     display: 'flex',
     gap: '12px',
-    justifyContent: 'flex-start',
-    marginTop: '40px'
+    justifyContent: 'flex-start'    
 }));
 
 export const ListItemWrapper = styled.div(() => ({

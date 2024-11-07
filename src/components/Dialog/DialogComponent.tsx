@@ -136,7 +136,7 @@ export const DialogComponent = () => {
                         </div>
                         {
                             newProcedures.length !== 0 &&
-                            <Wrapper style={{display:'flex', width:'100%', gap: '12px', justifyContent: 'flex-end'}}>
+                            <Wrapper style={{marginTop: '8px', display:'flex', width:'100%', gap: '12px', justifyContent: 'flex-end'}}>
                                 <Button 
                                     onClick={()=>showDialog()}
                                     style={{background:colors.white, color: colors.gray, border: '2px solid #D6D6EB'}}>Cancelar</Button>

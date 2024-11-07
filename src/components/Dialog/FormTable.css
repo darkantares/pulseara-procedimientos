@@ -24,9 +24,9 @@ form {
   position: relative; 
 }
 
-/* .table-field {
-  margin-bottom: 20px; 
-} */
+.table-field {
+  margin-bottom: 32px; 
+}
 
 .table-header,
 .table-cell {

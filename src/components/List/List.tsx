@@ -39,7 +39,7 @@ export const ListComponent = ({procedures}:{procedures:Procedures[]}) => {
                 ))
             }
             
-            <Wrapper>           
+            <Wrapper style={{marginTop: '20px'}}>           
                 <Button onClick={()=>showDialog()}>     
                     <IconButton src="./imgs/pencil.svg" />
                     Editar procedimientos
