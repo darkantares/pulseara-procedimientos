@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { GlobalContext } from "../../context/context";
 import { Button, IconButton } from "../Button/ButtonComponent.styled";
-import { List, ListItemWrapper, ListTitle, ListWrapper, Wrapper } from "./List.styled";
+import { ListItemWrapper, ListTitle, ListWrapper, Wrapper } from "./List.styled";
 import { Procedures } from "../../API";
 
 export const ListComponent = ({ procedures }: { procedures: Procedures[] }) => {
@@ -12,7 +12,6 @@ console.log(procedures);
     <>
       {procedures.map((procedure) => (
         <ListWrapper key={procedure.id}>
-          <List>
             <ListItemWrapper>
               <ListTitle>Procedimiento 01</ListTitle>
               <span>{procedure.procedure}</span>
@@ -33,7 +32,6 @@ console.log(procedures);
               <ListTitle>Autorizado RD$</ListTitle>
               <span>RD$ {procedure.authorized}</span>
             </ListItemWrapper>
-          </List>
         </ListWrapper>
       ))}
       
