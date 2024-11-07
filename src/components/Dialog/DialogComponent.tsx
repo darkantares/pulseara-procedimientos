@@ -1,6 +1,6 @@
 import { InputText } from '../../InputText/InputText.styled'
 import { Wrapper } from '../List/List.styled'
-import { SubTitleICon, TrashICon } from '../NoProcedures/NoProcedures.styled'
+import { Image, SubTitleICon, TrashICon } from '../NoProcedures/NoProcedures.styled'
 import { OverlayDialog, DialogTitleWrapper, AddNewProcedureButton, DialogBody, DialogStyledComponent, DialogTitle, CloseButton, DialogTable } from './Dialog.styled'
 import { Button } from '../Button/ButtonComponent.styled'
 import { colors } from '../../constants/colors'
@@ -224,7 +224,10 @@ export const DialogComponent = () => {
                                     style={{background:colors.white, color: colors.gray, border: '2px solid #D6D6EB'}}>
                                     Cancelar
                                 </Button>
-                                <Button>Guardar cambios</Button>
+                                <Button>
+                                    <img src='./imgs/check.svg'></img>
+                                    Guardar cambios
+                                </Button>
                             </Wrapper>
                         }
                     </form>
