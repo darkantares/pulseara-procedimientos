@@ -5,7 +5,7 @@ import { colors } from "../../constants/colors";
 export const ListWrapper = styled.div(() => ({
     display: 'flex',
     flexDirection: 'row' as const,
-    width: '90vw',
+    width: '80vw',
     maxWidth: '941px',
     height: '78px',
     flexShrink: 0,
@@ -19,7 +19,7 @@ export const ListWrapper = styled.div(() => ({
     
    
     "@media (max-width: 768px)": {
-      width: '100%',
+      width: '75vw',
       height: 'auto',
       padding: '20px',
       flexDirection: 'column'as const,
@@ -32,11 +32,10 @@ export const ListWrapper = styled.div(() => ({
     flexDirection: 'column'as const,
     alignItems: 'flex-start',
     gap: '7px',
-    
-    // Ajuste en el estilo para pantallas más pequeñas
+        
     "@media (max-width: 768px)": {
-      flexDirection: 'row'as const, // Cambia la dirección de los elementos a fila
-      gap: '1vw', // Reduce el espacio entre los elementos en dispositivos móviles
+      flexDirection: 'row'as const, 
+      gap: '1vw', 
     }
   }));
 
