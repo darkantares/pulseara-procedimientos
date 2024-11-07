@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { GlobalContext } from "../../context/context";
 import { Button, IconButton } from "../Button/ButtonComponent.styled";
-import { ListItemWrapper, ListTitle, ListWrapper, Wrapper } from "./List.styled";
+import { ListItemWrapper, ListLabel, ListTitle, ListWrapper, Wrapper } from "./List.styled";
 import { Procedures } from "../../API";
 
 export const ListComponent = ({ procedures }: { procedures: Procedures[] }) => {
@@ -14,23 +14,23 @@ console.log(procedures);
         <ListWrapper key={procedure.id}>
             <ListItemWrapper>
               <ListTitle>Procedimiento 01</ListTitle>
-              <span>{procedure.procedure}</span>
+              <ListLabel>{procedure.procedure}</ListLabel>
             </ListItemWrapper>
             <ListItemWrapper>
               <ListTitle>Código</ListTitle>
-              <span>{procedure.code}</span>
+              <ListLabel>{procedure.code}</ListLabel>
             </ListItemWrapper>
             <ListItemWrapper>
               <ListTitle>Reclamado RD$</ListTitle>
-              <span>RD$ {procedure.claimed}</span>
+              <ListLabel>RD$ {procedure.claimed}</ListLabel>
             </ListItemWrapper>
             <ListItemWrapper>
               <ListTitle>Diferencia RD$</ListTitle>
-              <span>RD$ {procedure.difference}</span>
+              <ListLabel>RD$ {procedure.difference}</ListLabel>
             </ListItemWrapper>
             <ListItemWrapper>
               <ListTitle>Autorizado RD$</ListTitle>
-              <span>RD$ {procedure.authorized}</span>
+              <ListLabel>RD$ {procedure.authorized}</ListLabel>
             </ListItemWrapper>
         </ListWrapper>
       ))}

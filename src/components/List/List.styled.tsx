@@ -58,3 +58,14 @@ export const ListTitle = styled(Typography)(() => ({
     role: 'heading',
     ariaLevel: 2,
 }));
+
+export const ListLabel = styled(Typography)({
+  color: '#000',
+  textAlign: 'right',
+  fontFeatureSettings: "'liga' off, 'clig' off",
+  fontFamily: 'Raleway',
+  fontSize: '16px',
+  fontStyle: 'normal',
+  fontWeight: 600,
+  lineHeight: 'normal'
+});
