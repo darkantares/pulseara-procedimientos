@@ -39,7 +39,13 @@ export const DialogTitleWrapper = styled.div(() => ({
   gap: '20px',
   marginBottom: '40px',
   marginLeft: '20px',
-  position: 'relative' as const
+  position: 'relative' as const,
+
+  "@media (max-width: 600px)": {
+    flexDirection: 'column' as const,
+    gap: '5px'
+  }
+  
 }));
 
 
