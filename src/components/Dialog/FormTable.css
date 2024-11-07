@@ -1,7 +1,6 @@
 .form-table-container {
   max-width: 100%;
   margin: 0 auto;
-  padding: 20px;
   overflow: hidden;
 }
 
@@ -15,6 +14,8 @@ form {
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-height: 215px;
+  overflow-y: auto;
 }
 
 .table-row, .table-field {
@@ -25,15 +26,23 @@ form {
 }
 
 .table-field {
-  margin-bottom: 32px; 
+  display: flex;
+  width: 100%;
+  margin-bottom: 32px;
+  position: relative;
+}
+.table-cell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-left: 25px;
+  position: relative;
 }
 
 .table-header,
 .table-cell {
   display: flex;
   align-items: center;
-  /* justify-content: center;
-  text-align: center; */
   flex: 1; 
 }
 
@@ -43,10 +52,14 @@ form {
   color: inherit; 
 }
 
-.table-cell {
-  background-color: transparent; 
-  text-align: left;
-  position: relative; 
+.table-icon {
+  position: absolute;
+  left: 0;
+  top: 67%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #666;
+  z-index: 1;
 }
 
 .table-cell input[type="text"] {
@@ -63,21 +76,12 @@ form {
   border-color: #888;
 }
 
-/* Estilos para los íconos */
-.table-icon {
-  position: absolute;
-  left: -21px; 
-  top: 65%;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: #666;
-}
+
 
 .table-cell-label{
   margin-bottom: 8px;
 }
 
-/* Estilos para pantallas pequeñas */
 @media (max-width: 600px) {
   .table-row:first-child {
     display: none;
@@ -88,8 +92,7 @@ form {
     margin-bottom: 20px;
   }
 
-  .table-header,
-  .table-cell {
+  .table-header {
     flex-direction: column;
     text-align: left;
     padding-left: 10px;
@@ -112,7 +115,6 @@ form {
   }
 }
 
-/* Estilos para pantallas grandes */
 @media (min-width: 601px) {
   .table-cell {
     display: block; 

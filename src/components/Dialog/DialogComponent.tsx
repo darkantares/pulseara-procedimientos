@@ -1,7 +1,7 @@
 import { InputText } from '../../InputText/InputText.styled'
 import { ListItemWrapper, ListTitle, Wrapper } from '../List/List.styled'
 import { SubTitleICon, TrashICon } from '../NoProcedures/NoProcedures.styled'
-import { OverlayDialog, DialogTitleWrapper, AddNewProcedureButton, DialogBody, StyledDivWrapper, StyledDiv, DialogStyledComponent, DialogTitle } from './Dialog.styled'
+import { OverlayDialog, DialogTitleWrapper, AddNewProcedureButton, DialogBody, StyledDivWrapper, StyledDiv, DialogStyledComponent, DialogTitle, CloseButton } from './Dialog.styled'
 import { Button } from '../Button/ButtonComponent.styled'
 import { colors } from '../../constants/colors'
 import { useContext, useEffect, useState } from 'react'
@@ -19,7 +19,7 @@ export const DialogComponent = () => {
 
     const [newProcedures, setNewProcedures] = useState<InitialProcedureDataState[]>([]);
 
-    const {showDialog, proceduresState} = useContext(GlobalContext); 
+    const {showDialog, proceduresState, setProcedures} = useContext(GlobalContext); 
     const {procedures} = proceduresState;
        
     useEffect(() => {
@@ -87,12 +87,8 @@ export const DialogComponent = () => {
         ).map(item => ({
             id: item.id as string,
         }));
-    
-      
-        
-        try {
-            console.log(newItems);
-            
+
+        try {            
             const createPromises = newItems.map(procedure =>
                 client.graphql({
                     query: createProcedures,
@@ -113,14 +109,33 @@ export const DialogComponent = () => {
                     variables: { input: { id: procedure.id } },
                 })
             );
-    
-            // console.log(createPromises);
-            // console.log(updatePromises);
-            // console.log(deletePromises);
-            const result = await Promise.all([...createPromises, ...updatePromises, ...deletePromises]);
-            console.log(result);
             
-            console.log('Changes saved successfully');
+            const [createResults, updateResults, deleteResults] = await Promise.all([
+                Promise.allSettled(createPromises),
+                Promise.allSettled(updatePromises),
+                Promise.allSettled(deletePromises)
+            ]);
+        
+            const successfulCreates = createResults.filter(result => result.status === 'fulfilled')
+                                                   .map(res => ((res as PromiseFulfilledResult<any>).value.data.createProcedures));
+
+            const successfulUpdates = updateResults.filter(result => result.status === 'fulfilled')
+                                                   .map(res => ((res as PromiseFulfilledResult<any>).value.data.updateProcedures));
+
+            const successfulDeletes = deleteResults.filter(result => result.status === 'fulfilled')
+                                                   .map(res => ((res as PromiseFulfilledResult<any>).value.data.deleteProcedures));
+
+            let updatedProcedures = [...procedures, ...successfulCreates];
+
+            updatedProcedures = updatedProcedures.map(proc =>
+                successfulUpdates.find(updatedProc => updatedProc.id === proc.id) || proc
+            );
+
+            updatedProcedures = updatedProcedures.filter(
+                proc => !successfulDeletes.some(deletedProc => deletedProc.id === proc.id)
+            );
+
+            setProcedures(updatedProcedures);
         } catch (err) {
             console.log('Error saving procedures:', err);
         }
@@ -131,6 +146,9 @@ export const DialogComponent = () => {
         <OverlayDialog>
             <DialogStyledComponent>
                 <DialogTitleWrapper>
+                    <CloseButton onClick={()=>showDialog()}>
+                        <img src="./imgs/close.svg" />
+                    </CloseButton>
                     <DialogTitle>Procedimientos</DialogTitle>  
                     <AddNewProcedureButton onClick={addNewProcedure}>
                         <SubTitleICon src="./imgs/plus.svg" />
@@ -211,44 +229,6 @@ export const DialogComponent = () => {
                         }
                     </form>
                 </div>
-                {/* <DialogBody>              
-                    <ListItemWrapper>
-                        <StyledDivWrapper>
-                            <TrashICon src="./imgs/trash.svg" />
-                            <StyledDiv>
-                                <ListTitle style={{marginBottom:'8px'}}>Procedimiento 01</ListTitle>            
-                                
-                            </StyledDiv>
-
-                            <StyledDiv>
-                                <ListTitle style={{marginBottom:'8px'}}>Código</ListTitle>            
-                                <InputText placeholder="Ej: 4563523" />
-                            </StyledDiv>
-
-                            <StyledDiv>
-                                <ListTitle style={{marginBottom:'8px'}}>Reclamado RD$</ListTitle>            
-                                <InputText placeholder="Ej: 4563523" />
-                            </StyledDiv>
-
-                            <StyledDiv>
-                                <ListTitle style={{marginBottom:'8px'}}>Diferencia RD$</ListTitle>            
-                                <InputText placeholder="Ej: 4563523" />
-                            </StyledDiv>
-
-                            <StyledDiv>
-                                <ListTitle style={{marginBottom:'8px'}}>Autorizado RD$</ListTitle>            
-                                <InputText placeholder="Ej: 4563523" />
-                            </StyledDiv>
-                        </StyledDivWrapper>
-                    </ListItemWrapper>
-                    <Wrapper style={{display:'flex', width:'100%', gap: '12px', justifyContent: 'flex-end'}}>
-                        <Button 
-                            onClick={()=>showDialog()}
-                            style={{background:colors.white, color: colors.gray, border: '2px solid #D6D6EB'}}>Cancelar</Button>
-                        <Button>Guardar cambios</Button>
-                    </Wrapper>
-                </DialogBody> */}
-
             </DialogStyledComponent>
         </OverlayDialog>
     )

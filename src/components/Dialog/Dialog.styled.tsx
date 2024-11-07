@@ -18,15 +18,15 @@ export const DialogStyledComponent = styled.div(() => ({
   width: '90vw',
   maxWidth: '1041px',
   height: '456px',
-  // flexShrink: 0,
   borderRadius: '8px',
   background: colors.white,
-  padding: '0 57.82px',
+  padding: '0 50.82px',
   boxSizing: 'border-box' as const,
   position: 'relative' as const,
+  display: 'flex'as const,
+  flexDirection: 'column'as const,
   "@media (max-width: 768px)": {
-    width: '95vw', // Ajuste adicional para pantallas tablet o menores
-    padding: '0 20px' // Reduce el padding en pantallas pequeñas
+    width: '95vw',
   }
 }));
 
@@ -37,7 +37,26 @@ export const DialogTitleWrapper = styled.div(() => ({
   height: '45px',
   flexShrink: 0,
   gap: '20px',
-  marginLeft: '26px'
+  marginBottom: '40px',
+  marginLeft: '20px',
+  position: 'relative' as const
+}));
+
+
+export const CloseButton = styled.div(() => ({
+  position: 'absolute' as const,
+  top: '5.79px',
+  right: '-40px',
+  background: 'transparent',
+  border: 'none',
+  fontSize: '24px',
+  color: '#333',
+  cursor: 'pointer',
+  zIndex: 10,
+  
+  '&:hover': {
+    color: '#e74c3c',
+  },
 }));
 
 export const DialogTitle = styled.div(() => ({

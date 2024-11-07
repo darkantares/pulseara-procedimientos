@@ -6,11 +6,11 @@ export interface InitialProcedureDataState extends CreateProceduresInput {
 }
 
 export const initialProcedureDataState: InitialProcedureDataState = { 
-    procedure: '', 
-    authorized: 0, 
-    claimed: 0, 
-    code: null, 
-    difference: 0,
+    procedure: 'sdfsdf', 
+    authorized: 3434, 
+    claimed: 3434, 
+    code: '2323', 
+    difference: 3434,
     isNew: false,
     isModified: false,
     isDeleted: false
