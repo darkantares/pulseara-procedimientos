@@ -1,0 +1,7 @@
+{
+    "AppSyncApiName": "procedimientospulsea",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-procedimientospulsea-dev-b49ea-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/179780e631d54b4d99b4bdc196e1f95aa3e90511"
+}
